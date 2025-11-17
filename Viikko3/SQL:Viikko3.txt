@@ -3,13 +3,11 @@ a) SELECT * FROM departments;
 
 b) SELECT DISTINCT title FROM titles;
 
-c) SELECT MIN(salary) FROM salaries;
-SELECT MAX(salary) FROM salaries;
+c) SELECT MIN(salary) FROM salaries; SELECT MAX(salary) FROM salaries;
 
 d) SELECT AVG(salary) FROM salaries;
 
-e) SELECT first_name AS Etunimi, last_name AS Sukunimi FROM employees WHERE
-last_name='Facello';
+e) SELECT first_name AS Etunimi, last_name AS Sukunimi FROM employees WHERE last_name='Facello';
 
 f) SELECT COUNT(*) from employees where birth_date > '1950-1-1' AND birth_date <'1960-1-1';
 
