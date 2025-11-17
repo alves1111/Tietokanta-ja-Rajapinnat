@@ -1,0 +1,90 @@
+5.
+a) SELECT * FROM departments;
+
+b) SELECT DISTINCT title FROM titles;
+
+c) SELECT MIN(salary) FROM salaries;
+SELECT MAX(salary) FROM salaries;
+
+d) SELECT AVG(salary) FROM salaries;
+
+e) SELECT first_name AS Etunimi, last_name AS Sukunimi FROM employees WHERE
+last_name='Facello';
+
+f) SELECT COUNT(*) from employees where birth_date > '1950-1-1' AND birth_date <'1960-1-1';
+
+g) SELECT gender AS Sukupuoli,count(*) AS KPL FROM employees GROUP BY gender;
+
+6.
+mysql> CREATE TABLE owner
+( first_name varchar(255),last_name varchar(255), address varchar(255),ownerID int PRIMARY KEY AUTO _INCREMENT );
+mysql> alter table pet drop column owner;
+mysql> alter table pet add column petID int primary key auto_increment;
+mysql> alter table pet add column ownerID int;
+mysql> alter table pet add constraint foreign key(ownerID) references owner(ownerID);
+mysql> desc pet;
++---------+-------------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+----------------+
+| name | varchar(20) | YES | | NULL | |
+| species | varchar(20) | YES | | NULL | |
+| sex | char(1) | YES | | NULL | |
+| birth | date | YES | | NULL | |
+| death | date | YES | | NULL | |
+| petID | int(11) | NO | PRI | NULL | auto_increment |
+| ownerID | int(11) | YES | MUL | NULL | |
++---------+-------------+------+-----+---------+----------------+
+mysql> desc owner;
++------------+--------------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+----------------+
+| first_name | varchar(255) | YES | | NULL | |
+| last_name | varchar(255) | YES | | NULL | |
+| address | varchar(255) | YES | | NULL | |
+| ownerID | int(11) | NO | PRI | NULL | auto_increment |
++------------+--------------+------+-----+---------+----------------+
+Omistajien lisääminen
+mysql> insert into owner values ('James','Bond','Osoite1',NULL);
+mysql> select * from owner;
++------------+-----------+----------+---------+
+| first_name | last_name | address | ownerID |
++------------+-----------+----------+---------+
+| James | Bond | Osoite1 | 1 |
+| Conan | Obrien | Osoite2 | 2 |
+| Kokki | Kolmonen | Osoite4 | 3 |
+| Neiti | Aika | Osoite4a | 4 |
++------------+-----------+----------+---------+
+Omistajat:
+mysql> update pet set ownerID=1 where name="Fang";
+
+7.
+
+a) SELECT * FROM employees ORDER BY last_name LIMIT 10;
+
+b) SELECT * FROM employees ORDER BY last_name, first_name LIMIT 10;
+
+c) SELECT * FROM employees ORDER BY hire_date DESC LIMIT 5;
+
+d) SELECT first_name,last_name,salary FROM employees JOIN salaries ON employees.emp_no = salaries.emp_ no WHERE salary = (SELECT MAX(salary) FROM salaries);
+
+e) SELECT first_name,last_name,salary FROM employees JOIN salaries ON employees.emp_no = salaries.emp_no WHERE salary = (SELECT MIN(salary) FROM salaries);
+
+f)SELECT first_name, last_name, salary FROM employees e JOIN salaries s ON e.emp_no=s.emp_no WHERE salary > 150000 ORDER BY salary DESC;
+
+g) select count(*) from employees join dept_emp on employees.emp_no=dept_emp.emp_no join departments on dept_emp.dept_no=departments.dept_no where dept_name='Sales' AND to-date='9999-01-01';
+
+SELECT first_name AS Etunimi, last_name AS Sukunimi, dept_name AS Osasto FROM employees e JOIN dept_manager dm ON e.emp_no=dm.emp_no JOIN departments d ON dm.dept_no=d.dept_no;
+
+i) SELECT AVG(salary) FROM salaries JOIN dept_emp ON salaries.emp_no=dept_emp.emp_no JOIN departments ON dept_emp.dept_no=departments.dept_no WHERE dept_name='Sales' AND dept_emp.to_date='9999-01-01';
+
+8.
+
+a) select * from language order by name;
+
+b)select first_name,last_name,title from actor join film_actor on actor.actor_id = film_actor.actor_id join film on film.film_id = film_actor.film_id where last_name='Temple';
+
+c)select first_name,last_name,title from actor join film_actor on actor.actor_id = film_actor.actor_id join film on film.film_id = film_actor.film_id where title='Ghost Groundhog';
+
+d)SELECT COUNT(*) FROM category c JOIN film_category fc ON c.category_id = fc.category_id WHERE name='Horror';
+
+e)SELECT title FROM category c JOIN film_category fc ON c.category_id = fc.category_id JOIN film f ON f.film_id = fc.film_id WHERE name='Horror';
