@@ -63,7 +63,7 @@ b) SELECT * FROM employees ORDER BY last_name, first_name LIMIT 10;
 
 c) SELECT * FROM employees ORDER BY hire_date DESC LIMIT 5;
 
-d) SELECT first_name,last_name,salary FROM employees JOIN salaries ON employees.emp_no = salaries.emp_ no WHERE salary = (SELECT MAX(salary) FROM salaries);
+d) SELECT first_name,last_name,salary FROM employees JOIN salaries ON employees.emp_no = salaries.emp_no WHERE salary = (SELECT MAX(salary) FROM salaries);
 
 e) SELECT first_name,last_name,salary FROM employees JOIN salaries ON employees.emp_no = salaries.emp_no WHERE salary = (SELECT MIN(salary) FROM salaries);
 
