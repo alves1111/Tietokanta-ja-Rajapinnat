@@ -1,0 +1,40 @@
+10.
+
+1.
+
+SELECT DISTINCT o.*
+FROM Opiskelija o
+JOIN Arviointi a ON o.idOpiskelija = a.idOpiskelija
+WHERE a.Arvosana = 0;
+
+2.
+
+SELECT o.*
+FROM Opiskelija o
+JOIN Arviointi a   ON o.idOpiskelija   = a.idOpiskelija
+JOIN Opintojakso j ON j.idOpintojakso = a.idOpintojakso
+WHERE j.Nimi = 'Fysiikka 3'
+  AND a.Arvosana > 0;
+
+3.
+
+SELECT j.*
+FROM Opintojakso j
+JOIN Arviointi a   ON j.idOpintojakso = a.idOpintojakso
+JOIN Opiskelija o  ON o.idOpiskelija  = a.idOpiskelija
+WHERE o.Etunimi  = 'Hessu'
+  AND o.Sukunimi = 'Hopo';
+
+4.
+
+SELECT AVG(a.Arvosana) AS AkunKeskiarvo
+FROM Arviointi a
+JOIN Opiskelija o ON o.idOpiskelija = a.idOpiskelija
+WHERE o.Etunimi  = 'Aku'
+  AND o.Sukunimi = 'Ankka';
+
+5.
+SELECT j.*
+FROM Opintojakso j
+LEFT JOIN Arviointi a ON j.idOpintojakso = a.idOpintojakso
+WHERE a.idArviointi IS NULL;

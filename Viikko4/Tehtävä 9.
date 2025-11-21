@@ -1,0 +1,92 @@
+-- 1) Tietokannan luonti ja käyttöön otto
+CREATE DATABASE IF NOT EXISTS ArviointiDB
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_general_ci;
+
+USE ArviointiDB;
+
+-- 2) Taulut ER-kuvan mukaan
+
+-- Opiskelija-taulu
+CREATE TABLE Opiskelija (
+    idOpiskelija INT AUTO_INCREMENT PRIMARY KEY,
+    Etunimi      VARCHAR(45) NOT NULL,
+    Sukunimi     VARCHAR(45) NOT NULL,
+    Osoite       VARCHAR(45),
+    Luokkatunnus VARCHAR(45)
+) ENGINE=InnoDB;
+
+-- Opintojakso-taulu
+CREATE TABLE Opintojakso (
+    idOpintojakso INT AUTO_INCREMENT PRIMARY KEY,
+    Koodi         VARCHAR(45) NOT NULL,
+    Laajuus       TINYINT     NOT NULL,
+    Nimi          VARCHAR(45) NOT NULL
+) ENGINE=InnoDB;
+
+-- Arviointi-taulu (linkittää opiskelijan ja opintojakson)
+CREATE TABLE Arviointi (
+    idArviointi   INT AUTO_INCREMENT PRIMARY KEY,
+    Paivamaara    DATE       NOT NULL,
+    Arvosana      TINYINT    NOT NULL,
+    idOpiskelija  INT        NOT NULL,
+    idOpintojakso INT        NOT NULL,
+    CONSTRAINT fk_Arviointi_Opiskelija
+        FOREIGN KEY (idOpiskelija)
+        REFERENCES Opiskelija(idOpiskelija),
+    CONSTRAINT fk_Arviointi_Opintojakso
+        FOREIGN KEY (idOpintojakso)
+        REFERENCES Opintojakso(idOpintojakso)
+) ENGINE=InnoDB;
+
+-- 3) Testidatan syöttö (sama kuin esimerkeissä)
+
+INSERT INTO Opintojakso (idOpintojakso, Koodi, Laajuus, Nimi) VALUES
+(3,  'T20041', 3, 'Tietokannat'),
+(4,  'T20042', 3, 'Liike-elaman tapatietous'),
+(5,  'T20043', 3, 'Fysiikka 3'),
+(6,  'T20044', 6, 'Elektroniikan perusteet'),
+(7,  'T20045', 5, 'Kellarihumppa'),
+(8,  'T20046', 3, 'Matematiikka 2'),
+(9,  'T20047', 3, 'Ruotsin kieli'),
+(10, 'T20048', 3, 'VHDL-kieli');
+
+INSERT INTO Opiskelija (idOpiskelija, Etunimi, Sukunimi, Osoite, Luokkatunnus) VALUES
+(1, 'Aku',   'Ankka', 'Ankkalinna 313', 'TTE3SNH'),
+(2, 'Roope', 'Ankka', 'Ankkalinna 314', 'TTE3SNH'),
+(3, 'Iines', 'Ankka', 'Ankkalinna 315', 'TTE4SNL'),
+(4, 'Mikki', 'Hiiri', 'Ankkalinna 316', 'TTE2SNO'),
+(5, 'Hessu', 'Hopo',  'Ankkalinna 317', 'TTE2SNO');
+
+-- Arviointi-data, jotta JOIN-tulos vastaa esimerkkiä
+INSERT INTO Arviointi (idArviointi, Paivamaara, Arvosana, idOpiskelija, idOpintojakso) VALUES
+(1,  '2014-09-05', 1, 1, 3),  -- Aku, Tietokannat
+(2,  '2014-09-05', 1, 1, 5),  -- Aku, Fysiikka 3
+(3,  '2014-09-05', 0, 1, 9),  -- Aku, Ruotsin kieli
+(4,  '2014-09-05', 4, 2, 3),  -- Roope, Tietokannat
+(5,  '2014-09-05', 2, 2, 5),  -- Roope, Fysiikka 3
+(6,  '2014-09-05', 4, 3, 3),  -- Iines, Tietokannat
+(7,  '2014-09-05', 3, 3, 5),  -- Iines, Fysiikka 3
+(8,  '2014-09-05', 5, 4, 3),  -- Mikki, Tietokannat
+(9,  '2014-09-05', 4, 4, 5),  -- Mikki, Fysiikka 3
+(10, '2014-09-05', 5, 5, 5),  -- Hessu, Fysiikka 3
+(11, '2014-09-05', 1, 5, 3);  -- Hessu, Tietokannat
+
+-- 4) Kyselyt (samana kuin tehtävässä)
+
+-- Opintojakso-taulun tulostus
+SELECT * FROM Opintojakso;
+
+-- Opiskelija-taulun tulostus
+SELECT * FROM Opiskelija;
+
+-- Liitetty näkymä arvioinneista, opiskelijoista ja opintojaksoista
+SELECT
+    Opiskelija.Etunimi,
+    Opiskelija.Sukunimi,
+    Arviointi.Arvosana,
+    Arviointi.Paivamaara,
+    Opintojakso.Nimi
+FROM Arviointi
+JOIN Opiskelija  ON Opiskelija.idOpiskelija   = Arviointi.idOpiskelija
+JOIN Opintojakso ON Opintojakso.idOpintojakso = Arviointi.idOpintojakso;
