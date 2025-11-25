@@ -1,0 +1,43 @@
+USE kirjasto;
+
+-- Tekijät
+INSERT INTO Tekija (etunimi, sukunimi) VALUES
+('Väinö', 'Linna'),
+('Matti', 'Meikäläinen'),
+('Maija', 'Mallikas');
+
+-- Teokset
+INSERT INTO Teos (nimi) VALUES
+('Tuntematon sotilas'),
+('Kaksikon kirja');
+
+-- Liitokset
+INSERT INTO TeosTekija (teos_id, tekija_id) VALUES
+(1, 1),
+(2, 2),
+(2, 3);
+
+-- Niteet (kaksi samaa kirjaa)
+INSERT INTO Nide (teos_id, hyllypaikka) VALUES
+(1, 'A1'),
+(1, 'A2');
+
+-- Nide toisesta kirjasta
+INSERT INTO Nide (teos_id, hyllypaikka) VALUES
+(2, 'B1');
+
+-- Asiakas
+INSERT INTO Asiakas (nimi) VALUES
+('Aku Ankka');
+
+-- Lainaus (kirja on yhä lainassa)
+INSERT INTO Lainaus (asiakas_id, nide_id, lainauspvm, palautuspvm) VALUES
+(1, 1, '2025-11-24', NULL);
+
+-- Tarkistus
+SELECT * FROM Tekija;
+SELECT * FROM Teos;
+SELECT * FROM TeosTekija;
+SELECT * FROM Nide;
+SELECT * FROM Asiakas;
+SELECT * FROM Lainaus;
